@@ -127,3 +127,5 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+/src/data/df_total_base.csv
+/src/data/df_total_base_sp500.csv
