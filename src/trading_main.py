@@ -44,6 +44,7 @@ def main_get_trades(escritura = True, sp500 = False):
             data = data[['ticket', 'Date', 'Open', 'Close', 'Volume']]
             data.columns = ['ticket', 'date', 'open', 'close', 'volume']
             data = data.sort_values('date', ascending=True)
+            data['bin_aumento_intradia'] = np.vectorize(lambda x, y: (-1) if (y <= x) else 1)(data['open'], data['close'])
             data[f'close_forward_{periodo_corto}'] = data['close'].shift(periods=-periodo_corto, fill_value=0)
             data[f'close_backward_{periodo_corto}'] = data['close'].shift(periods=periodo_corto, fill_value=0)
             data[f'close_backward_{periodo_largo}'] = data['close'].shift(periods=periodo_largo, fill_value=0)
@@ -64,7 +65,7 @@ def main_get_trades(escritura = True, sp500 = False):
             data[f'var_backward_{periodo_largo}_porcentaje'] = round((data['close'] /
                                                                       data[f'close_backward_{periodo_largo}'])
                                                                      - 1, 4) * 100
-            data = data[['ticket', 'date', 'open', 'close', 'volume', f'close_forward_{periodo_corto}',
+            data = data[['ticket', 'date', 'open', 'close', 'bin_aumento_intradia', 'volume', f'close_forward_{periodo_corto}',
                              f'close_backward_{periodo_corto}', f'close_backward_{periodo_largo}',
                              f'media_{periodo_corto}', f'media_{periodo_largo}', 'macd',
                              f'var_backward_{periodo_corto}_porcentaje', f'var_backward_{periodo_largo}_porcentaje',
@@ -86,5 +87,5 @@ def main_get_trades(escritura = True, sp500 = False):
 if __name__ == '__main__':
     print('Hi! Executing trading.py...')
     escritura = True
-    sp500 = False
+    sp500 = True
     df_tot = main_get_trades(escritura, sp500)
