@@ -44,7 +44,7 @@ def main_get_trades(escritura = True, sp500 = False):
             data = data[['ticket', 'Date', 'Open', 'Close', 'Volume']]
             data.columns = ['ticket', 'date', 'open', 'close', 'volume']
             data = data.sort_values('date', ascending=True)
-            data['bin_aumento_intradia'] = np.vectorize(lambda x, y: (-1) if (y <= x) else 1)(data['open'], data['close'])
+            data['bin_aumento_intradia'] = np.vectorize(lambda x, y: (-1) if (y <= x) else 1, otypes=['int'])(data['open'], data['close'])
             data[f'close_forward_{periodo_corto}'] = data['close'].shift(periods=-periodo_corto, fill_value=0)
             data[f'close_backward_{periodo_corto}'] = data['close'].shift(periods=periodo_corto, fill_value=0)
             data[f'close_backward_{periodo_largo}'] = data['close'].shift(periods=periodo_largo, fill_value=0)
