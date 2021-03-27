@@ -129,3 +129,4 @@ dmypy.json
 .pyre/
 /src/data/df_total_base.csv
 /src/data/df_total_base_sp500.csv
+/src/data/constituents-financials_csv.csv
